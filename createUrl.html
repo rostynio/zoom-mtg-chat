@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Generate URL</title>
+  </head>
+  <body>
+    Generate URL
+    <form>
+      <label>
+        Meeting number:
+        <input
+          type="text"
+          placeholder="Enter meeting number"
+          id="meetingNumber"
+        />
+      </label>
+      <label>
+        Metting password:
+        <input
+          type="text"
+          placeholder="Enter meeting password"
+          id="meetingPassword"
+        />
+      </label>
+      <input type="submit" value="Generate URL" id="generateUrl" />
+    </form>
+    <p id="generatedUrl"></p>
+    <button type="button" id="copyUrlButton">Copy URL</button>
+    <script>
+      const form = document.querySelector('form');
+      let generatedUrl;
+      const formSubmit = (e) => {
+        e.preventDefault();
+        const meetingNumber = document.getElementById('meetingNumber').value;
+        const meetingPassword = document.getElementById('meetingPassword')
+          .value;
+        generatedUrl = document.getElementById('generatedUrl');
+        const urlData = {
+          room: meetingNumber,
+          password: meetingPassword,
+        };
+        const searchParams = new URLSearchParams(urlData);
+        const url = `https://zoom-sound.netlify.app?${searchParams}`;
+        generatedUrl.textContent = url;
+      };
+      form.addEventListener('submit', formSubmit);
+      const copyUrlButton = document.getElementById('copyUrlButton');
+      const copyURL = () => {
+        const text = generatedUrl.innerText;
+        const elem = document.createElement('textarea');
+        document.body.appendChild(elem);
+        elem.value = text;
+        elem.select();
+        document.execCommand('copy');
+        document.body.removeChild(elem);
+      };
+      copyUrlButton.addEventListener('click', copyURL);
+    </script>
+  </body>
+</html>
